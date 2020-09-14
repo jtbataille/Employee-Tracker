@@ -24,7 +24,7 @@ connection.conect((err) => {
         console.error("error connecting: " + err.stack);
         return;
     }
-    console.log("connected as id " + connectionn.threadId);
+    console.log("connected as id " + connection.threadId);
 });
 
 // Function to validate first and last name in CLI open-input fields
