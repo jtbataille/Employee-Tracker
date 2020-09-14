@@ -2,13 +2,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 const cTable = require("console.table");
-const { connectableObservableDescriptor } = require("rxjs/internal/observable/ConnectableObservable");
-
-// Create instance of express app
-var app = express();
-
-// Set port for app
-var PORT = process.env.PORT || 8080;
 
 // MySQL DB Connection Info
 var connection = mysql.createConnection({
@@ -45,7 +38,7 @@ function start() {
             type: "list",
             message: "What would you like to do?",
             name: "begin",
-            choices: ["View All Employees","Add Employee", "Update Employee Roles"]
+            choices: ["View All Employees", "Add Employee", "Update Employee Roles"]
         }
     ]).then(answer => {
         if (answer.begin === "View All Employees") {
@@ -54,13 +47,22 @@ function start() {
             addEmployee();
         } else if (answer.begin === "Update Employee Roles") {
             updateEmployeeRole();
+        } else {
+            connection.end();
         }
     });
 };
 
 // Function to view all employees stored in database
 function viewAll() {
-
+    var query = "SELECT * FROM employee ORDER BY id";
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log("\n-----------------------------------");
+        const table = cTable.getTable(res);
+        console.log(table);
+        start();
+    });
 };
 
 // function viewAllByDepart() { };
@@ -86,7 +88,7 @@ function addEmployee() {
             type: "list",
             message: "What is the employee's role?",
             name: "role",
-            choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Software Engineer", "Account Mannager", "Accountant", "Legal Team Lead"]
+            choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Software Engineer", "Account Manager", "Accountant", "Lawyer", "Legal Team Lead"]
         },
         {
             type: "list",
@@ -95,7 +97,7 @@ function addEmployee() {
             choices: ["None", ]
         }
     ]).then(answers => {
-
+        console.log("\n-----------------------------------");
         start();
     });
 };
@@ -124,7 +126,7 @@ function updateEmployeeRole() {
             choices: []
         }
     ]).then(answers => {
-
+        console.log("\n-----------------------------------");
         start();
     });
 };
@@ -145,7 +147,7 @@ function updateEmployeeManager() {
             choices: []
         }
     ]).then(answers => {
-
+        console.log("\n-----------------------------------");
         start();
     });
 };
@@ -156,7 +158,4 @@ function updateEmployeeManager() {
 
 // function removeRole() { };
 
-// Start server so it can listen to requests
-app.listen(PORT, () => {
-    console.log("Server listening on: http://localhost:" + PORT);
-});
+start();
