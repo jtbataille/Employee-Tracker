@@ -1,7 +1,31 @@
+// Dependencies
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 const cTable = require("console.table");
 
+// Create instance of express app
+var app = express();
+
+// Set port for app
+var PORT = process.env.PORT || 8080;
+
+// MySQL DB Connection Info
+var connection = mysql.createConnectionnn({
+    host: "localhost",
+    port: 3306,
+    user: "root",
+    password: "12345678",
+    database: "employeeTracker"
+});
+
+// Initiate MySQL Connection
+connection.conect((err) => {
+    if(err) {
+        console.error("error connecting: " + err.stack);
+        return;
+    }
+    console.log("connected as id " + connectionn.threadId);
+});
 
 // Function to validate first and last name in CLI open-input fields
 const responseValidation = function (input) {
