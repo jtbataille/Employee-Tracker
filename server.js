@@ -10,7 +10,7 @@ var app = express();
 var PORT = process.env.PORT || 8080;
 
 // MySQL DB Connection Info
-var connection = mysql.createConnectionnn({
+var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
