@@ -2,6 +2,7 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 const cTable = require("console.table");
+const { connectableObservableDescriptor } = require("rxjs/internal/observable/ConnectableObservable");
 
 // Create instance of express app
 var app = express();
@@ -19,7 +20,7 @@ var connection = mysql.createConnection({
 });
 
 // Initiate MySQL Connection
-connection.conect((err) => {
+connection.connect((err) => {
     if(err) {
         console.error("error connecting: " + err.stack);
         return;
@@ -154,3 +155,8 @@ function updateEmployeeManager() {
 // function addRole() { };
 
 // function removeRole() { };
+
+// Start server so it can listen to requests
+app.listen(PORT, () => {
+    console.log("Server listening on: http://localhost:" + PORT);
+});
