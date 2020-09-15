@@ -38,7 +38,7 @@ function start() {
             type: "list",
             message: "What would you like to do?",
             name: "begin",
-            choices: ["View All Employees", "Add Employee", "Update Employee Roles"]
+            choices: ["View All Employees", "Add Employee", "Update Employee Roles", "Exit"]
         }
     ]).then(answer => {
         if (answer.begin === "View All Employees") {
@@ -47,7 +47,7 @@ function start() {
             addEmployee();
         } else if (answer.begin === "Update Employee Roles") {
             updateEmployeeRole();
-        } else {
+        } else if (answer.begin === "Exit") {
             connection.end();
         }
     });
@@ -97,6 +97,7 @@ function addEmployee() {
             choices: ["None", ]
         }
     ]).then(answers => {
+        var query = "INSERT INTO employee (first_name, last_name, role_id, manager_id)";
         console.log("\n-----------------------------------");
         start();
     });
