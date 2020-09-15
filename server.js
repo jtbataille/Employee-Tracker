@@ -41,14 +41,19 @@ function start() {
             choices: ["View All Employees", "Add Employee", "Update Employee Roles", "Exit"]
         }
     ]).then(answer => {
-        if (answer.begin === "View All Employees") {
-            viewAll();
-        } else if (answer.begin === "Add Employee") {
-            addEmployee();
-        } else if (answer.begin === "Update Employee Roles") {
-            updateEmployeeRole();
-        } else if (answer.begin === "Exit") {
-            connection.end();
+        switch (answer.begin) {
+            case "View All Employees":
+                viewAll();
+                break;
+            case "Add Employee":
+                addEmployee();
+                break;
+            case "Update Employee Roles":
+                updateEmployeeRole();
+                break;
+            case "Exit":
+                connection.end();
+                break;
         }
     });
 };
