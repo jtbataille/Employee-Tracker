@@ -31,8 +31,8 @@ VALUES
 ("Malia", "Brown", 6, 7),
 ("Xiang", "Reily", 6, 7),
 ("Sally", "Ford", 7, NULL),
-("Danny", "Fitz", 8, 8),
-("Lauren", "Folley", 8, 8);
+("Danny", "Fitz", 8, 10),
+("Lauren", "Folley", 8, 10);
 
 -- Selects all columns from each table in database --
 SELECT * FROM employee;

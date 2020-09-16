@@ -38,7 +38,7 @@ function start() {
             type: "list",
             message: "What would you like to do?",
             name: "begin",
-            choices: ["View All Employees", "View All Departments", "View All Roles", "Add Employee", "Update Employee Roles", "Exit"]
+            choices: ["View All Employees", "View All Departments", "View All Roles", "Add Department", "Add Role", "Add Employee", "Update Employee Roles", "Exit"]
         }
     ]).then(answer => {
         switch (answer.begin) {
@@ -50,6 +50,12 @@ function start() {
                 break;
             case "View All Roles":
                 viewAllRoles();
+                break;
+            case "Add Department":
+                addDepartment();
+                break;
+            case "Add Role":
+                addRole();
                 break;
             case "Add Employee":
                 addEmployee();
@@ -146,6 +152,84 @@ function addEmployee() {
     });
 };
 
+function addRole() {
+    let query = "SELECT * FROM department";
+    connection.query(query, (err, result) => {
+        if (err) throw err;
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "What is the title of this role?",
+                name: "title",
+                validate: responseValidation
+            },
+            {
+                type: "number",
+                message: "What is the salary for this position (please include 2 decimal places)",
+                name: "salary",
+                validate: responseValidation
+            },
+            {
+                type: "list",
+                message: "Please choose a department",
+                choices: () => {
+                    const choices = [];
+                    for (let i = 0; i < result.length; i++) {
+                        choices.push(result[i].name);
+                    }
+                    return choices;
+                },
+                name: "department"
+            }
+        ]).then(answer => {
+            let dept_id;
+            for (let i = 0; i < result.length; i++) {
+                if (result[i].name === answer.department) {
+                    dept_id = result[i].id;
+                }
+            }
+            query = "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)";
+            connection.query(query, [answer.title, answer.salary, dept_id], (err, res) => {
+                if (err) throw err;
+
+                start();
+            });
+        });
+    });
+};
+
+function addDepartment() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the name of the department you wish to add?",
+            name: "name",
+            validate: responseValidation
+        }
+    ]).then(answer => {
+        let duplicate = false;
+        connection.query("SELECT * FROM department", (err, result) => {
+            if (err) throw err;
+            for (let i = 0; i < result.length; i++) {
+                if (result[i].name === answer.name) {
+                    duplicate = true;
+                }
+            }
+            if (!duplicate) {
+                var query = "INSERT INTO department (name) VALUES (?)";
+                connection.query(query, [answer.name], (err, res) => {
+                    if (err) throw err;
+                    console.log("\n-----------------------------------");
+                    console.log(query);
+                });
+            } else {
+                console.log("\n ------ This department already exists! -----");
+            }
+            start();
+        });
+    });
+};
+
 // function removeEmployee() { };
 
 // Function to update an employee's role within database
@@ -195,8 +279,6 @@ function updateEmployeeManager() {
         start();
     });
 };
-
-// function addRole() { };
 
 // function removeRole() { };
 
