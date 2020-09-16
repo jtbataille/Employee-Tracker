@@ -66,7 +66,9 @@ function start() {
 
 // Function to view all employees stored in database
 function viewAllEmployees() {
-    var query = "SELECT * FROM employee ORDER BY id";
+    var query = "SELECT CONCAT(a.first_name, ' ', a.last_name) AS 'employee name', title, salary, name AS department, ";
+    query += "CONCAT(b.first_name, ' ', b.last_name) AS manager FROM employee a LEFT JOIN employee b ON a.manager_id = b.id ";
+    query += "INNER JOIN role ON a.role_id = role.id INNER JOIN department ON department_id = department.id"
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.log("\n-----------------------------------");
