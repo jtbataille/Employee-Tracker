@@ -90,7 +90,7 @@ function viewAllDepartments() {
 
 // Function to view all roles stored in database
 function viewAllRoles() {
-    var query = "SELECT * FROM role ORDER BY id";
+    var query = "SELECT title, salary, name AS department FROM role INNER JOIN department ON role.department_id = department.id";
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.log("\n-----------------------------------");
