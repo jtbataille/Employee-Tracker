@@ -38,12 +38,18 @@ function start() {
             type: "list",
             message: "What would you like to do?",
             name: "begin",
-            choices: ["View All Employees", "Add Employee", "Update Employee Roles", "Exit"]
+            choices: ["View All Employees", "View All Departments", "View All Roles", "Add Employee", "Update Employee Roles", "Exit"]
         }
     ]).then(answer => {
         switch (answer.begin) {
             case "View All Employees":
-                viewAll();
+                viewAllEmployees();
+                break;
+            case "View All Departments":
+                viewAllDepartments();
+                break;
+            case "View All Roles":
+                viewAllRoles();
                 break;
             case "Add Employee":
                 addEmployee();
@@ -59,8 +65,32 @@ function start() {
 };
 
 // Function to view all employees stored in database
-function viewAll() {
+function viewAllEmployees() {
     var query = "SELECT * FROM employee ORDER BY id";
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log("\n-----------------------------------");
+        const table = cTable.getTable(res);
+        console.log(table);
+        start();
+    });
+};
+
+// Function to view all departments stored in database
+function viewAllDepartments() {
+    var query = "SELECT * FROM department ORDER BY id";
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log("\n-----------------------------------");
+        const table = cTable.getTable(res);
+        console.log(table);
+        start();
+    });
+};
+
+// Function to view all roles stored in database
+function viewAllRoles() {
+    var query = "SELECT * FROM role ORDER BY id";
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.log("\n-----------------------------------");
@@ -91,18 +121,24 @@ function addEmployee() {
         },
         {
             type: "list",
-            message: "What is the employee's role?",
-            name: "role",
-            choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Software Engineer", "Account Manager", "Accountant", "Lawyer", "Legal Team Lead"]
-        },
-        {
-            type: "list",
             message: "Who is the employee's manager?",
             name: "managerName",
             choices: ["None", ]
         }
     ]).then(answers => {
-        var query = "INSERT INTO employee (first_name, last_name, role_id, manager_id)";
+        var query = "SELECT title, id FROM role";
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "What is the employee's role?",
+                name: "role",
+                choices: [query.map(role => {
+                    return role.title;
+                })]
+            },
+        ])
+        
+        var query1 = "INSERT INTO employee (first_name, last_name, role_id, manager_id)";
         console.log("\n-----------------------------------");
         start();
     });
@@ -157,8 +193,6 @@ function updateEmployeeManager() {
         start();
     });
 };
-
-// function viewAllRoles() { };
 
 // function addRole() { };
 
