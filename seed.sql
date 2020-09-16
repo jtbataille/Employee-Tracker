@@ -25,14 +25,14 @@ VALUES
 ("Mike", "Chan", 2, 1),
 ("Frank", "Adams", 2, 1),
 ("Ashley", "Rodriguez", 3, NULL),
-("Kevin", "Tupik", 4, 3),
-("Mason", "Ochoa", 4, 3),
+("Kevin", "Tupik", 4, 4),
+("Mason", "Ochoa", 4, 4),
 ("Tom", "Allen", 5, NULL),
-("Malia", "Brown", 6, 5),
-("Xiang", "Reily", 6, 5),
+("Malia", "Brown", 6, 7),
+("Xiang", "Reily", 6, 7),
 ("Sally", "Ford", 7, NULL),
-("Danny", "Fitz", 8, 7),
-("Lauren", "Folley", 8, 7);
+("Danny", "Fitz", 8, 8),
+("Lauren", "Folley", 8, 8);
 
 -- Selects all columns from each table in database --
 SELECT * FROM employee;
