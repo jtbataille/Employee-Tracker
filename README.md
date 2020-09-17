@@ -34,7 +34,31 @@ With these structures in place, the user may use the following command to begin 
 Inquirer, MySQL, Console.Table, Node JS
 
 ## Application Demo
--------
+After opening an integrated terminal and entering the command to begin the CLI, as explained above, the user will be greated with a list of options relating to the various functions of the application:
+
+* ```View All Employees```
+* ```View All Departments```
+* ```View All Roles```
+* ```Add Department```
+* ```Add Role```
+* ```Add Employee```
+* ```Update Employee Roles```
+
+The first three options allow the user to see each employee, department, and role contained within the database's memory:
+
+![view-all](Assets/view-all.png)
+
+The ```Add Department``` option will allow the user to add a department to the database, giving it an ID number as well so that it can be used in other areas of the application:
+
+![add-department](Assets/add-department.png)
+
+The ```Add Roll``` option will allow the user to add a roll to the database, also receiving a new ID to allow it to be continually used. This new roll will also ask for a department to be attached to it from the pre-existing choices in the databse:
+
+![add-roll](Assets/add-role.png)
+
+The ```Add Employee``` option will allow the user to create a new employee. This prompt contains the information for the new employee's first and last name, role, department, and manager (if applicable). This option will then connect the employee's information to the role and department tables within the database:
+
+![add-employee](Assets/add-employee.png)
 
 ## Contact Information
 * Jarrod Bataille
