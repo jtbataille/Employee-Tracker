@@ -2,6 +2,7 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 const cTable = require("console.table");
+const { title } = require("process");
 
 // MySQL DB Connection Info
 var connection = mysql.createConnection({
@@ -318,28 +319,57 @@ function addDepartment() {
 
 // Function to update an employee's role within database
 function updateEmployeeRole() {
-    inquirer.prompt([
-        {
-            type: "list",
-            message: "Which employee would you like to update?",
-            name: "employee",
-            choices: []
-        },
-        {
-            type: "list",
-            message: "What is the employee's role?",
-            name: "role",
-            choices: []
-        },
-        {
-            type: "list",
-            message: "Who is the employee's manager?",
-            name: "managerName",
-            choices: []
-        }
-    ]).then(answers => {
-        console.log("\n-----------------------------------");
-        start();
+    connection.query("SELECT * FROM employee", (err, res) => {
+        if (err) throw err;
+        let dept = res[0].department_id;
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Which employee would you like to update?",
+                choices: () => {
+                    const choices = [];
+                    for (let i = 0; i < res.length; i++) {
+                        choices.push(res[i].first_name + " " + res[i].last_name);
+                    }
+                    return choices;
+                },
+                name: "fullName"
+            }
+        ]).then(answers => {
+            connection.query("SELECT * FROM role", (err, res) => {
+                if (err) throw err;
+                
+                inquirer.prompt([
+                    {
+                        type: "list",
+                        message: "Choose a role",
+                        choices: () => {
+                            const choices = [];
+                            for (let i = 0; i < res.length; i++) {
+                                choices.push(res[i].title);
+                            }
+                            return ([...new Set(choices)]);
+                        },
+                        name: "role"
+                    }
+                ]).then (answer => {
+                    let query = "SELECT role.id, title, name FROM role INNER JOIN department ON department_id = department.id WHERE name = ? AND title = ?";
+                    connection.query(query, [dept, title], (err, res) => {
+                        if (err) throw err;
+
+
+                        let query = "UPDATE employee SET role_id = ? INNER JOIN role ON employee.role_id = role.title WHERE first_name = ? AND last_name = ?";
+                        let firstName = answers.fullName.split(" ")[0];
+                        let lastName = answers.fullName.split(" ")[1];
+                        connection.query(query, [answer.role, firstName, lastName], (err, res) => {
+                            if (err) throw err;
+    
+                            start();
+                        });
+                    });
+                });
+            });
+        });
     });
 };
 
