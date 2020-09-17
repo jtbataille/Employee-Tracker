@@ -64,6 +64,10 @@ Finally, the ```Update Employee Roles``` option will allow users to modify the c
 
 ![update-role](Assets/update-role.png)
 
+A full video of the CLI functionality can be seen here:
+
+[Full CLI video](https://drive.google.com/file/d/1YP3IS7sX6EKP-YMRIuVmYvzqTrhTICzu/view?usp=sharing)
+
 ## Contact Information
 * Jarrod Bataille
   * Portfolio Webpage: https://jtbataille.github.io/
