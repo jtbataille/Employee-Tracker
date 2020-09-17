@@ -109,10 +109,6 @@ function viewAllRoles() {
     });
 };
 
-// function viewAllByDepart() { };
-
-// function viewAllByManager() { };
-
 // Function to get new employee's first and last name
 function newEmployeeName () {
     inquirer.prompt([
@@ -184,11 +180,11 @@ function newEmployeeDept(role, firstName, lastName) {
 // Function to add employee to database
 function addEmployee(dept, role, firstName, lastName) {
     let query = "SELECT role.id FROM role INNER JOIN department ON department_id = department.id WHERE title = ? AND name = ?";
-    connection.query(query, [role, dept], (err, response) => {
+    connection.query(query, [role, dept], (err, res) => {
         if (err) {
             throw err;
         }
-        role_id = response[0].id;
+        role_id = res[0].id;
         connection.query("SELECT id, first_name, last_name FROM employee",
         (err, res1) => {
             if (err) throw err;
@@ -315,8 +311,6 @@ function addDepartment() {
     });
 };
 
-// function removeEmployee() { };
-
 // Function to update an employee's role within database
 function updateEmployeeRole() {
     connection.query("SELECT * FROM employee", (err, res) => {
@@ -342,7 +336,7 @@ function updateEmployeeRole() {
                 inquirer.prompt([
                     {
                         type: "list",
-                        message: "Choose a role",
+                        message: "Choose a new role",
                         choices: () => {
                             const choices = [];
                             for (let i = 0; i < res.length; i++) {
@@ -353,17 +347,18 @@ function updateEmployeeRole() {
                         name: "role"
                     }
                 ]).then (answer => {
-                    let query = "SELECT role.id, title, name FROM role INNER JOIN department ON department_id = department.id WHERE name = ? AND title = ?";
-                    connection.query(query, [dept, title], (err, res) => {
+                    connection.query("SELECT * FROM role", (err, res) => {
                         if (err) throw err;
-
-
-                        let query = "UPDATE employee SET role_id = ? INNER JOIN role ON employee.role_id = role.title WHERE first_name = ? AND last_name = ?";
+                        let role_id;
+                        for (let i = 0; i < res.length; i++) {
+                            if (answer.role === res[i].title) {
+                                role_id = res[i].id;
+                            }
+                        }
                         let firstName = answers.fullName.split(" ")[0];
                         let lastName = answers.fullName.split(" ")[1];
-                        connection.query(query, [answer.role, firstName, lastName], (err, res) => {
+                        connection.query("UPDATE employee SET role_id = ? WHERE first_name = ? AND last_name = ?", [role_id, firstName, lastName], (err, res) => {
                             if (err) throw err;
-    
                             start();
                         });
                     });
@@ -372,28 +367,5 @@ function updateEmployeeRole() {
         });
     });
 };
-
-// Function to update employee's mananger
-function updateEmployeeManager() {
-    inquirer.prompt([
-        {
-            type: "list",
-            message: "Which employee's manager do you want to update?",
-            name: "managers",
-            choices: []
-        },
-        {
-            type: "list",
-            message: "Which employee do you want to set as manager for the select employee?",
-            name: "manager",
-            choices: []
-        }
-    ]).then(answers => {
-        console.log("\n-----------------------------------");
-        start();
-    });
-};
-
-// function removeRole() { };
 
 start();
