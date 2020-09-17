@@ -177,7 +177,7 @@ function newEmployeeDept(role, firstName, lastName) {
     });
 };
 
-// Function to add employee to database
+// Finnal function to add newly minted employee to database
 function addEmployee(dept, role, firstName, lastName) {
     let query = "SELECT role.id FROM role INNER JOIN department ON department_id = department.id WHERE title = ? AND name = ?";
     connection.query(query, [role, dept], (err, res) => {
@@ -233,6 +233,7 @@ function addEmployee(dept, role, firstName, lastName) {
     });
 };
 
+// Function to add a role to database
 function addRole() {
     let query = "SELECT * FROM department";
     connection.query(query, (err, result) => {
@@ -279,6 +280,7 @@ function addRole() {
     });
 };
 
+// Function to add a department to database
 function addDepartment() {
     inquirer.prompt([
         {
