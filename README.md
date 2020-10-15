@@ -73,6 +73,3 @@ A full video of the CLI functionality can be seen here:
   * Portfolio Webpage: https://jtbataille.github.io/
   * GitHub Profile: https://github.com/jtbataille
   * E-mail Address: jtbataille@gmail.com
-
-- - -
-Copyright © 2007 Free Software Foundation, Inc. <https://fsf.org/>
